@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MvSymLn
 {
@@ -26,10 +23,10 @@ namespace MvSymLn
 
     class MvSymLn
     {
-        List<RealocateTask> Tasks;
+        readonly List<RealocateTask> Tasks;
 
         private int _Err = -1;
-        public int Err { get { return _Err; } }
+        public int Err => _Err;
 
         public MvSymLn(List<RealocateTask> tasks)
         {
@@ -78,7 +75,7 @@ namespace MvSymLn
             return ExecuteCommand(cmd, cmdParams, XcopyExitCode);
          }
 
-        static private string XcopyExitCode(int exitCode)
+        private static string XcopyExitCode(int exitCode)
         {
             Dictionary<int, string> xcopyExitCodes = new Dictionary<int, string>
             {
@@ -141,28 +138,28 @@ namespace MvSymLn
             }
         }
 
-        static protected string FormatMessageOk()
+        protected static string FormatMessageOk()
         {
-            return string.Format("\t=> OK");
+            return $"\t=> OK";
         }
 
-        static protected string FormatMessageError(string cmd, int errCode, string errMessage)
+        protected static string FormatMessageError(string cmd, int errCode, string errMessage)
         {
-            return string.Format("\t=> ERROR \"{0}\" ({1} \"{2}\")", cmd, errCode, errMessage);
+            return $"\t=> ERROR \"{cmd}\" ({errCode} \"{errMessage}\")";
         }
         
         // DOS Codes seems to be sublist of WinErr
         //  http://stanislavs.org/helppc/dos_error_codes.html
         //  https://www.rpi.edu/dept/cis/software/g77-mingw32/include/winerror.h
-        static private string Win32ErrMsg(int errCode)
+        private static string Win32ErrMsg(int errCode)
         {
             var e = new System.ComponentModel.Win32Exception(errCode);
             return e.Message;
         }
 
-        private string BetterPath(string s)
+        private static string BetterPath(string s)
         {
-            return string.Format("\"{0}\"", s);
+            return $"\"{s}\"";
           }
     }
 }
